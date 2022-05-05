@@ -1,0 +1,259 @@
+Create Database Sample1
+
+Use {Sample1}
+Go
+Create Table tblGender
+(ID int NOT NULL Primary Key,
+Gender nvarchar(50) NOT NULL
+)
+
+select * from tblGender
+
+select * from tblPerson
+
+Alter table tblPerson add constraint tblPerson_GenderID_FK
+foreign Key (GenderID) references tblGender(ID)
+
+/*dding default constraint*/
+Insert into tblPerson (ID, Name, Email)
+				values (7,'Rana','rana@gmail.com')
+
+ALTER TABLE tblPerson 
+ADD CONSTRAINT DF_tblPerosn_GenderID 
+DEFAULT 3 FOR GenderID
+
+/*Adding a check constraint*/
+
+Insert into tblPerson (ID, Name, Email,GenderID,Age)
+				values (8,'Rana','rana@gmail.com',1,33)
+
+ALTER Table tblPerson 
+Add Constraint CK_tblPerson_Age CHECK ( AGE >0 AND AGE <150) 
+
+
+/* Delete a check constraint*/
+
+Alter Table tblPerson
+Drop Constraint CK_tblPerson_Age
+
+
+/* Identity Column in SQL*/
+select * from tblPerson1
+
+Insert into tblPerson1 values ('Martan')
+
+
+Delete from tblPerson1 where PersonID = 3
+
+
+SET IDENTITY_INSERT tblPerson1 OFF
+
+Insert into tblPerson1 (PersonID, Name) values (3,'Pritom')
+
+Delete from tblPerson1
+
+
+Insert into tblPerson1 values ('Martan')
+
+DBCC CHECKIDENT(tblPerson1, RESEED,0)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Select * from tblPerson2
+
+Alter Table tblPerson2
+Add Constraint UQ_tblPerson2_Email Unique(Email) 
+
+UPDATE tblPerson2
+SET Email = 'akash1@gmail.com'
+WHERE ID = 7;
+
+Insert into tblPerson2 Values( 7,'akash1','akash@gmail.com',1,21,'Savar') 
+
+Alter Table tblPerson2
+Drop Constraint UQ_tblPerson2_Email
+
+
+/*Select statement*/
+
+
+Select * from tblPerson2
+
+/*Distint row*/
+Select DISTINCT Age from tblPerson2
+Select DISTINCT Name, Age from tblPerson2
+
+Select * from tblPerson2
+
+Select Name, Email from tblPerson2 Where age = 24
+
+Select * from  tblPerson2 Where Age <> 24
+
+Select * from  tblPerson2 Where Name <> 'Akash'
+Select * from  tblPerson2 Where Name != 'Akash'
+Select * from tblPerson2 Where Age >=30
+Select * from tblPerson2 Where Age <=30  AND Name = 'akash'
+Select * from tblPerson2 Where Age <=30  AND Name = 'akash' OR  Name =  'akib'
+
+
+Select * from tblPerson2 Where Age <=30 AND Name IN('akash','akib')
+
+Select * from tblPerson2 Where Age in( 22,24,33)
+
+
+Select * from tblPerson2 Where Age BETWEEN 20 AND 30
+ 
+Select * from tblPerson2 Where Email LIKE '%@%'
+  
+Select * from tblPerson2 Where Email NOT LIKE '%@%'
+
+Select * from tblPerson2 Where Email LIKE '_@_gmail'
+
+Select * from tblPerson2 Where Email NOT LIKE '_@_gmail'
+
+Select * from tblPerson2 Where Name LIKE '[abc]%'
+
+Select * from tblPerson2 Where Name LIKE '[^Ak]%' /* NOT */
+
+
+
+Select * from tblPerson2 Where (City = 'London' OR City = 'Savar') AND Age >20
+
+Select * from tblPerson2 Where City IN('London ', 'Savar') AND Age >20
+
+Select * from tblPerson2 order by Name 
+
+
+Select * from tblPerson2 order by Name DESC
+
+Select * from tblPerson2 order by Name 
+
+Select * from tblPerson2 order by Name, Age ASC
+
+Select top 3 * from tblPerson2
+
+Select top 30 Percent * from tblPerson2
+
+
+
+Select * from tblPerson2 Order by Age DESC
+
+Select top 1 * from tblPerson2 Order by Age DESC
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+Select * from tblEmployee
+
+Select Sum(Salary) from tblEmployee
+
+Select MIN(Salary) from tblEmployee
+
+Select MAX(Salary) from tblEmployee
+
+Select City, SUM(Salary) AS TotalSalary 
+FROM tblEmployee 
+GROUP BY City
+
+
+Select City, Gender, SUM(Salary) as TotalSalary
+From tblEmployee 
+Group By City, Gender
+Order by City
+
+Select Gender, City, SUM(Salary) as TotalSalary
+From tblEmployee
+Group By City, Gender
+Order By City
+
+Select COUNT(*) from tblEmployee
+Select COUNT(ID) from tblEmployee
+
+
+Select City, Gender, SUM(Salary) As TotalSalary, COUNT(Name) As TotalEmployee
+From tblEmployee
+Group By City, Gender
+Order By TotalEmployee DESC
+
+
+
+Select City, Gender, SUM(Salary) As TotalSalary, COUNT(Name) As [Total Employee]
+From tblEmployee
+Group By City, Gender
+Order By [Total Employee] DESC
+
+/*Where*/
+Select City, Gender, SUM(Salary) As TotalSalary, COUNT(Name) As TotalEmployee
+From tblEmployee
+Where Gender= 'Male'
+Group By City, Gender
+Order By TotalEmployee DESC
+
+
+/*having*/
+Select City, Gender, SUM(Salary) As TotalSalary, COUNT(Name) As TotalEmployee
+From tblEmployee
+Group By City, Gender
+Having Gender = 'Male'
+Order By TotalEmployee DESC
+
+
+
+/*
+1. WHERE clause can be used with -Select, Insert and Update statements, where As HAVING clause can
+ only be used with the Select statement
+2. WHERE filters rows beforme aggregation (GROUPING), where as, HAVING filters groups, after the 
+aggregations are performed.
+3. Aggregate functions cannot be used in the WHERE clause, unless it is in a sub query contained in
+ a HAVING clause, whereas, aggregate functions can be used in Having clause.
+*/
+
+
+Select City, Gender, SUM(Salary) As TotalSalary, COUNT(Name) As TotalEmployee
+From tblEmployee
+Group By City, Gender
+Having SUM(Salary) > 4000
+
+
+/* Using TRUE & FALSE in SQL*/
+
+
+SELECT
+CASE WHEN SUM(salary) >40000 THEN 
+     CAST( 1 as BIT ) 
+ELSE 
+      CAST( 0 as BIT )  
+END As IsPersonCat
+FROM tblEmployee
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+
